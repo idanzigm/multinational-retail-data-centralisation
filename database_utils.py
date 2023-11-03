@@ -1,3 +1,7 @@
+import yaml
+import psycopg2
+from sqlalchemy import create_engine
+
 class DatabaseConnector:
     def __init__(self, database_name, user, password, host, port):
         # Constructor to initialize database connection parameters
@@ -19,3 +23,11 @@ class DatabaseConnector:
         with open('db_creds.yaml', 'r') as file:
             creds = yaml.safe_load(file)
         return creds
+    
+    from sqlalchemy import create_engine
+
+    def init_db_engine(self):
+        creds = self.read_db_creds()
+        connection_string = f"postgresql://{creds['RDS_USER']}:{creds['RDS_PASSWORD']}@{creds['RDS_HOST']}:{creds['RDS_PORT']}/{creds['RDS_DATABASE']}"
+        engine = create_engine(connection_string)
+        return engine
