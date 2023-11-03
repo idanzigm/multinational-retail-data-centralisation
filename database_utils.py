@@ -14,3 +14,8 @@ class DatabaseConnector:
     def disconnect(self):
         # Method to close the database connection
         pass
+
+    def read_db_creds(self):
+        with open('db_creds.yaml', 'r') as file:
+            creds = yaml.safe_load(file)
+        return creds
