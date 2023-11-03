@@ -1,3 +1,5 @@
+import pandas as pd
+
 class DataExtractor:
     def extract_from_csv(self, file_path):
         # Method to extract data from a CSV file
@@ -10,3 +12,10 @@ class DataExtractor:
     def extract_from_s3(self, bucket_name, file_key):
         # Method to extract data from an S3 bucket
         pass
+
+    # Create a method 'read_rds_table'
+    def read_rds_table(self, connector, table_name):
+        engine = connector.init_db_engine()
+        query = f"SELECT * FROM {table_name}"
+        df = pd.read_sql(query, engine)
+        return df
