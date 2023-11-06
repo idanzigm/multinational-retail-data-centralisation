@@ -27,7 +27,6 @@ class DataCleaning:
             df['int_column'] = df['int_column'].astype(int)
         except ValueError as e:
             print(f"Error converting to integers: {e}")
-            # Optionally, you can choose to drop rows with invalid values or perform other actions
 
         # Handle rows filled with wrong information based on some condition
         df = df[df['condition_column'] == 'desired_condition']
