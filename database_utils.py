@@ -4,20 +4,36 @@ from sqlalchemy import create_engine
 
 class DatabaseConnector:
     def __init__(self, database_name, user, password, host, port):
-        # Constructor to initialize database connection parameters
-        pass
+        self.database_name = database_name
+        self.user = user
+        self.password = password
+        self.host = host
+        self.port = port
+        self.connection = None
     
-    def connect(self):
-        # Method to establish a connection to the database
-        pass
+    # def connect(self):
+    #     try:
+    #         self.connection = psycopg2.connect(
+    #             database=self.database_name,
+    #             user=self.user,
+    #             password=self.password,
+    #             host=self.host,
+    #             port=self.port
+    #         )
+    #         print("Connected to database successfully")
+    #     except Exception as e:
+    #         print(f"Error connecting to database: {e}")
     
-    def upload_data(self, data, table_name):
-        # Method to upload data to the database
-        pass
+    # def upload_data(self, data, table_name):
+    #     # Method to upload data to the database
+    #     pass
     
-    def disconnect(self):
-        # Method to close the database connection
-        pass
+    # def disconnect(self):
+    #     if self.connection:
+    #         self.connection.close()
+    #         print("Disconnected from database")
+    #     else:
+    #         print("No active database connection")
     
     # Create a method 'read_db_creds'
     def read_db_creds(self):
@@ -38,4 +54,7 @@ class DatabaseConnector:
         inspector = inspect(engine)
         return inspector.get_table_names()
     
-    
+    # Create a method to 'uplodad_to_db'
+    def upload_to_db(self, df, table_name):
+        engine = self.init_db_engine()
+        df.to_sql(table_name, engine, if_exists='replace', index=False)
