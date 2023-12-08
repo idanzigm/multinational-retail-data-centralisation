@@ -1,6 +1,7 @@
 import psycopg2
 from sqlalchemy import create_engine, MetaData
 import yaml
+import localyaml """for the local DB connector"""
 
 class DatabaseConnector:
     def __init__(self):
@@ -49,6 +50,39 @@ class DatabaseConnector:
 
         return list(table_names)
 
+
+
+class LocalDatabaseConnector:
+    def __init__(self):
+        pass
+
+    @staticmethod
+    def read_db_creds():
+        """
+        Read the credentials from the YAML file.
+
+        Returns:
+        - dict: Database credentials.
+        """
+        with open("local_db_creds.yaml", "r") as localyaml_file:
+            creds = yaml.safe_load(localyaml_file)
+        return creds
+
+    @staticmethod
+    def init_db_engine():
+        """
+        Initialize and return an SQLAlchemy database engine.
+
+        Returns:
+        - sqlalchemy.engine.base.Engine: Database engine.
+        """
+        creds = LocalDatabaseConnector.read_db_creds()
+
+        db_url = """WRITE URL HERE"""
+        engine = create_engine(db_url)
+
+        return engine
+
     def upload_to_db(self, table_name, data):
         """
         Upload data to the specified table in the database.
@@ -61,6 +95,7 @@ class DatabaseConnector:
 
         with engine.connect() as connection:
             data.to_sql(table_name, connection, index=False, if_exists='replace')
+        
 # import yaml
 # from sqlalchemy import create_engine, MetaData
 # import pandas as pd
