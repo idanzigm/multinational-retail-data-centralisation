@@ -1,19 +1,77 @@
 import pandas as pd
+from database_utils import DatabaseConnector
+
+class DataExtractor:
+    @staticmethod
+    def read_rds_table(connector_instance, table_name):
+        """
+        Extract the database table to a pandas DataFrame.
+
+        Parameters:
+        - connector_instance: An instance of DatabaseConnector.
+        - table_name (str): The name of the table to extract.
+
+        Returns:
+        - pd.DataFrame: Extracted data.
+        """
+        engine = connector_instance.init_db_engine()
+
+        with engine.connect() as connection:
+            query = f"SELECT * FROM {table_name};"
+            return pd.read_sql(query, connection)
+
+
+# import pandas as pd
 # import requests
 # import boto3
 # import io
-# from database_connector import DatabaseConnector
+# from database_utils import DatabaseConnector
 
-class DataExtractor:
-    def __init__(self):
-        pass
+# # This calss will work as a utility class, in it will be methods that help extract data from different data sources. The methods contained will be fit to extract data from a particular data source, these sources will include CSV files, an API and an S3 bucket. 
+# class DataExtractor:
+#     @staticmethod
+#     def extract_rds_data(table_name):
+#         # Method to extract data from an AWS RDS database
+#         engine = DatabaseConnector.init_db_engine()
 
-    # T3S5: Create a method 'read_rds_table' which will extract the database table to a pandas DataFrame
-    def read_rds_table(self, db_connector, table_name):
-        engine = db_connector.init_db_engine()
-        query = f"SELECT * FROM {table_name}"
-        df = pd.read_sql(query, engine)
-        return df
+#         # Use pandas to read data from the specified table
+#         with engine.connect() as connection:
+#             query = f"SELECT * FROM {table_name};"
+#             data = pd.read_sql(query, connection)
+
+#         return data
+
+#     @staticmethod
+#     def list_db_tables():
+#         # Method to list all tables in the database
+#         engine = DatabaseConnector.init_db_engine()
+
+#         with engine.connect() as connection:
+#             metadata = MetaData()
+#             metadata.reflect(bind=connection)
+#             table_names = metadata.tables.keys()
+
+#         return table_names
+
+#     @staticmethod
+#     def read_rds_table(connector_instance, table_name):
+#         # Method to extract the database table to a pandas DataFrame
+#         tables = DataExtractor.list_db_tables()
+
+#         if table_name not in tables:
+#             raise ValueError(f"Table '{table_name}' not found in the database.")
+
+#         data = connector_instance.extract_rds_data(table_name)
+#         return data
+#     def __init__(self):
+#         pass
+
+#     # T3S5: Create a method 'read_rds_table' which will extract the database table to a pandas DataFrame
+#     def read_rds_table(self, db_connector, legacy_users):
+#         engine = db_connector.init_db_engine()
+#         query = f"SELECT * FROM {legacy_users}"
+#         df = pd.read_sql(query, engine)
+#         return df
         
     # def extract_from_csv(self, file_path):
     #     """

@@ -1,38 +1,72 @@
+import pandas as pd
+
 class DataCleaning:
+    @staticmethod
+    def clean_user_data(user_data):
+        """
+        Clean the user data by handling NULL values, correcting date errors,
+        fixing incorrectly typed values, and filtering out rows with incorrect information.
 
-    def __init__(self):
-        pass
+        Parameters:
+        - user_data (pd.DataFrame): The input DataFrame containing user data.
 
-    # T3S6: Create a method called clean_user_data which will perform the cleaning of the user data
-    def clean_user_data(self, df):
-        # Remove rows with NULL values
-        df = df.dropna()
+        Returns:
+        - pd.DataFrame: Cleaned user data.
+        """
+        cleaned_data = user_data.copy()
 
-        # Handle date errors (assuming date_column is the column containing dates)
-        try:
-            df['date_column'] = pd.to_datetime(df['date_column'], format='%Y-%m-%d')
-        except ValueError as e:
-            print(f"Error converting dates: {e}")
+        # Handling NULL values
+        cleaned_data = cleaned_data.dropna()
 
-        # Handle incorrectly typed values (assuming int_column should be integers)
-        try:
-            df['int_column'] = df['int_column'].astype(int)
-        except ValueError as e:
-            print(f"Error converting to integers: {e}")
+        # Correcting date errors
+        cleaned_data['join_date'] = pd.to_datetime(cleaned_data['join_date'], errors='coerce')
 
-        # Handle rows filled with wrong information based on some condition
-        df = df[df['condition_column'] == 'desired_condition']
+        # Fixing incorrectly typed values
+        cleaned_data['user_uuid'] = pd.to_numeric(cleaned_data['user_uuid'], errors='coerce')
 
-        return df
+        # Filtering out rows with incorrect information
+        # (replace 'condition_column' and 'condition_value' with appropriate column and value)
+        cleaned_data = cleaned_data[~(cleaned_data['condition_column'] == 'condition_value')]
+
+        return cleaned_data
+
+# import pandas as pd
+# from database_utils import DatabaseConnector
+# class DataCleaning:
+
+#     def clean_user_data(user_data):
+#         # Method to clean the user data
+#         cleaned_data = user_data.copy()
+
+#         # Handling NULL values
+#         cleaned_data = cleaned_data.dropna()
+
+#         # Correcting date errors (assuming 'date_column' is the date column in the DataFrame)
+#         cleaned_data['opening_date'] = pd.to_datetime(cleaned_data['opening_date'], errors='coerce')
+
+#         # Fixing incorrectly typed values
+#         # (assuming 'numeric_column' is a numeric column in the DataFrame)
+#         cleaned_data['numeric_column'] = pd.to_numeric(cleaned_data['numeric_column'], errors='coerce')
+
+#         return cleaned_data
+# #     def __init__(self):
+# #         self.db_connector = DatabaseConnector()
+
+# #     # T3S6: Create a method called clean_user_data which will perform the cleaning of the user data
+# #     def clean_user_data(self, df):
+# #         print(f"Type of df: {type(df)}")
+# #         # Remove rows with NULL values
+# #         cleaned_df = df.dropna()
+
+# #         # Handle date errors 
+# #         try:
+# #             df['opening_date'] = pd.to_datetime(df['opening_date'], format='%Y-%m-%d')
+# #         except ValueError as e:
+# #             print(f"Error converting dates: {e}")
+            
+# #         return df
     
-    # def clean_csv_data(self, data):
-    #     # Method to clean data extracted from a CSV file
-    #     pass
-    
-    # def clean_api_data(self, data):
-    #     # Method to clean data extracted from an API
-    #     pass
-    
-    # def clean_s3_data(self, data):
-    #     # Method to clean data extracted from an S3 bucket
-    #     pass
+# #         self.db_connector.upload_to_db(cleaned_df, 'your_table_name')
+
+# # data_cleaner = DataCleaning()
+# # cleaned_df = data_cleaner.clean_user_data(df)
