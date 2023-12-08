@@ -5,7 +5,7 @@ class DataCleaning:
     def clean_user_data(user_data):
         """
         Clean the user data by handling NULL values, correcting date errors,
-        fixing incorrectly typed values, and filtering out rows with incorrect information.
+        fixing incorrectly typed values.
 
         Parameters:
         - user_data (pd.DataFrame): The input DataFrame containing user data.
@@ -24,12 +24,11 @@ class DataCleaning:
         # Fixing incorrectly typed values
         cleaned_data['user_uuid'] = pd.to_numeric(cleaned_data['user_uuid'], errors='coerce')
 
-        # Filtering out rows with incorrect information
-        # (replace 'condition_column' and 'condition_value' with appropriate column and value)
-        cleaned_data = cleaned_data[~(cleaned_data['condition_column'] == 'condition_value')]
+        # The line below has been removed, so no filtering based on a condition
+        # cleaned_data = cleaned_data[~(cleaned_data['condition_column'] == 'condition_value')]
 
         return cleaned_data
-
+    
 # import pandas as pd
 # from database_utils import DatabaseConnector
 # class DataCleaning:

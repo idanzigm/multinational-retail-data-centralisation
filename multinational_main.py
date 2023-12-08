@@ -10,13 +10,13 @@ def main():
     user_data = DataExtractor.read_rds_table(db_connector, 'legacy_users')
 
     # Clean the user data
-    cleaned_user_data = DataCleaning.clean_user_data(user_data)
+    cleaning_user_data = DataCleaning.clean_user_data(user_data)
 
     # Specify the target table name
     target_table_name = 'dim_users'
 
     # Upload the cleaned user data to the sales_data database in the dim_users table
-    db_connector.upload_to_db(target_table_name, cleaned_user_data)
+    db_connector.upload_to_db(target_table_name, cleaning_user_data)
 
 if __name__ == "__main__":
     main()
