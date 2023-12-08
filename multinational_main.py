@@ -1,4 +1,5 @@
 from database_utils import DatabaseConnector
+from database_utils import LocalDataBaseConnector 
 from data_extraction import DataExtractor
 from data_cleaning import DataCleaning
 
@@ -12,11 +13,14 @@ def main():
     # Clean the user data
     cleaning_user_data = DataCleaning.clean_user_data(user_data)
 
+    # Create an instance of DatabaseConnector
+    local_db_connector = LocalDatabaseConnector()
+    
     # Specify the target table name
     target_table_name = 'dim_users'
 
     # Upload the cleaned user data to the sales_data database in the dim_users table
-    db_connector.upload_to_db(target_table_name, cleaning_user_data)
+    local_db_connector.upload_to_db(target_table_name, cleaning_user_data)
 
 if __name__ == "__main__":
     main()
